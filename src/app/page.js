@@ -3,7 +3,7 @@ import HomeApp from "@/components/HomeApp";
 
 export default function Home() {
   return (
-    <div className="flex justify-between h-dvh">
+    <div className="flex justify-between h-dvh overflow-hidden">
       <HomeApp />
       <Chat />
     </div>
