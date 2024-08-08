@@ -1,10 +1,11 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Chat from "@/components/Chat";
+import HomeApp from "@/components/HomeApp";
 
 export default function Home() {
   return (
-   <div>
-    ok
-   </div>
-  )
+    <div className="flex justify-between h-dvh">
+      <HomeApp />
+      <Chat />
+    </div>
+  );
 }

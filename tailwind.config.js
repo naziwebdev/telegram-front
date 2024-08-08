@@ -6,24 +6,19 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-      extend: {
-        fontFamily: {
-          "poppins-black": ["poppins-black"],
-          "poppins-bold": ["poppins-bold"],
-          "poppins-xBold": ["poppins-xBold"],
-          "poppins-light": ["poppins-light"],
-          "poppins-xLight": ["poppins-xLight"],
-          "poppins-medium": ["poppins-medium"],
-          "poppins-regular": ["poppins-regular"],
-          "poppins-semiBold": ["poppins-semiBold"],
-          "poppins-thin": ["poppins-thin"],
-        },
-        screens: {
-          "xs": "550px",
-          "2xs": "400px",
-        },
+    extend: {
+      fontFamily: {
+        "roboto-bold": ["roboto-bold"],
+        "roboto-medium": ["roboto-medium"],
+        "roboto-reg": ["roboto-reg"],
+        "vazir-medium": ["vazir-medium"],
+        vazir: ["vazir"],
+      },
+      screens: {
+        xs: "550px",
+        "2xs": "400px",
+      },
     },
   },
   plugins: [],
-}
-
+};

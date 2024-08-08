@@ -25,4 +25,50 @@
     font-family: vazir;
     src: url(/fonts/Vazir.ttf) format(truetype);
   }
+
+  *,
+  *::before,
+  *::after {
+      box-sizing: border-box;
+  }
+
+  body {
+      font-family: vazir roboto-reg;
+      overflow: hidden;
+  }
+  /*slate gray indigo violet*/
+
+  * ::-webkit-scrollbar{
+      scrollbar-color:black;
+      scrollbar-width: thin;
+  }
+
+  *::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+      /* background: #d4d4d4; */
+      /* background: #e9e8e8; */
+      border-radius: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+      background-color:#bdbcbc;
+      border-radius: 20px;
+  }
+
+
+}
+
+
+
+
+@layer components {
+  .marker {
+    @apply relative  before:content-[''] before:absolute before:left-1.5
+        before:-bottom-4 before:w-24 before:h-1 before:z-10 before:bg-purple-600;
+  }
+
 }
