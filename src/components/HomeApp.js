@@ -1,21 +1,23 @@
 import { GiHamburgerMenu } from "react-icons/gi";
 import { TbSearch } from "react-icons/tb";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-1/3 bg-zinc-900 h-dvh overflow-auto">
-      <div className="flex justify-between items-center gap-x-10 p-5">
+    <Link href={'/chat/76687'}>
+    <div className="flex-1 bg-zinc-900 h-dvh overflow-y-auto overflow-x-hidden">
+      <div className="flex justify-between items-center gap-x-5 xl:gap-x-10 p-5">
         <GiHamburgerMenu className="text-white text-4xl items-center" />
-        <div className="flex justify-between items-center gap-x-5 p-2 w-full bg-white rounded-full">
+        <div className="flex justify-between items-center gap-x-5 p-2 w-[80%] bg-white rounded-full">
           <TbSearch className="text-2xl" />
           <input
             type="text"
             placeholder="Search"
-            className="flex-1 outline-none"
+            className="flex-1 outline-none w-full"
           />
         </div>
       </div>
-      <ul className="flex items-center gap-x-5 text-lg text-white mt-10 font-roboto-reg pb-3 border-b-4 border-b-black">
+      <ul className="flex overflow-x-auto overflow-y-hidden items-center gap-x-5 text-lg text-white mt-10 font-roboto-reg pb-3 border-b-4 border-b-black">
         <li className="ps-5 marker text-purple-600 cursor-pointer">frontend</li>
         <li className="ps-5 cursor-pointer">backend</li>
         <li className="ps-5 cursor-pointer">ui/ux</li>
@@ -322,5 +324,6 @@ export default function Home() {
         </li>
       </ul>
     </div>
+    </Link>
   );
 }

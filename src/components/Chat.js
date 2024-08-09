@@ -9,24 +9,28 @@ import Message from "./Message";
 
 import Image from "next/image";
 
-export default function Chat() {
+export default function Chat({ full }) {
   return (
-    <div className="flex-1 h-full overflow-hidden">
-      <div className="flex justify-between items-center bg-zinc-900 px-5 py-3">
+    <div
+      className={`${
+        full === true ? "w-full" : "hidden md:w-[60%] xmd:w-2/3"
+      } h-full overflow-hidden`}
+    >
+      <div className="flex justify-between items-center w-full  bg-zinc-900 px-5 py-3">
         <div className="flex justify-between items-center gap-x-4">
           <img
             src="/images/bg.png"
             alt="avatar"
-            className="w-16 h-16 rounded-full object-cover"
+            className="xs:w-16 xs:h-16 w-12 h-12 rounded-full object-cover"
           />
           <div className="text-white">
-            <p className="text-lg font-roboto-bold">React-js</p>
-            <span className="text-zinc-400 font-roboto-reg">
+            <p className="xs:text-lg font-roboto-bold">React-js</p>
+            <span className="text-zinc-400 font-roboto-reg text-sm xs:text-base">
               last seen recently
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-x-8 cursor-pointer text-2xl text-zinc-400">
+        <div className="flex items-center gap-x-4 xs:gap-x-8 cursor-pointer text-xl xs:text-2xl text-zinc-400">
           <FiPhone />
           <TbSearch />
           <BsThreeDotsVertical />
@@ -38,15 +42,15 @@ export default function Chat() {
           alt="bg"
           width={1000}
           height={1000}
-          className="absolute -z-20 w-full h-full"
+          className="absolute -z-20 w-full h-full object-cover"
         />
-        <div className=" flex justify-between items-center px-6 bg-[#bdbcbc] w-4/5 rounded-2xl h-14 absolute bottom-6 left-1/2 -translate-x-1/2 gap-x-4">
+        <div className=" flex justify-between items-center px-3 md:px-6 bg-[#bdbcbc] w-[90%] xmd:w-4/5 rounded-2xl h-14 absolute bottom-16 2xs:bottom-6 left-1/2 -translate-x-1/2 gap-x-4">
           <BsEmojiSmile className="text-3xl cursor-pointer" />
           <input
             type="text"
-            className="flex-1 h-full bg-transparent outline-none"
+            className="w-1/2  overflow-auto xs:flex-1 h-full bg-transparent outline-none"
           />
-          <div className="flex items-center gap-x-5 text-2xl">
+          <div className="flex items-center gap-x-2 md:gap-x-5 text-xl md:text-2xl">
             <div className="">
               <label htmlFor="location">
                 <GrAttachment className="cursor-pointer mt-8" />

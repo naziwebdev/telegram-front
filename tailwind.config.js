@@ -15,7 +15,8 @@ module.exports = {
         vazir: ["vazir"],
       },
       screens: {
-        xs: "550px",
+        "xmd": "915px",
+        "xs": "550px",
         "2xs": "400px",
       },
     },

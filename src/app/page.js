@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="flex justify-between h-dvh overflow-hidden">
       <HomeApp />
-      <Chat />
+      <Chat full={false}/>
     </div>
   );
 }
