@@ -5,6 +5,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { MdLocationOn } from "react-icons/md";
 import { GrAttachment } from "react-icons/gr";
 import { BsFillSendFill } from "react-icons/bs";
+import Message from "./Message";
 
 import Image from "next/image";
 
@@ -37,15 +38,18 @@ export default function Chat() {
           alt="bg"
           width={1000}
           height={1000}
-          className="w-full h-full"
+          className="absolute -z-20 w-full h-full"
         />
         <div className=" flex justify-between items-center px-6 bg-[#bdbcbc] w-4/5 rounded-2xl h-14 absolute bottom-6 left-1/2 -translate-x-1/2 gap-x-4">
           <BsEmojiSmile className="text-3xl cursor-pointer" />
-          <input type="text" className="flex-1 h-full bg-transparent outline-none" />
+          <input
+            type="text"
+            className="flex-1 h-full bg-transparent outline-none"
+          />
           <div className="flex items-center gap-x-5 text-2xl">
             <div className="">
               <label htmlFor="location">
-                <MdLocationOn className="text-3xl cursor-pointer mt-8" />
+                <GrAttachment className="cursor-pointer mt-8" />
               </label>
               <input
                 id="location"
@@ -54,11 +58,19 @@ export default function Chat() {
               />
             </div>
 
-            <GrAttachment className="cursor-pointer" />
+            <MdLocationOn className="text-3xl cursor-pointer" />
             <button className="flex justify-center items-center bg-purple-600 rounded-full p-2">
               <BsFillSendFill className="text-white" />
             </button>
           </div>
+        </div>
+        <div className="w-full message-wrapper overflow-auto h-[90vh] pt-8 pb-32 px-8 ">
+          <Message own={false} />
+          <Message own={true} />
+          <Message own={false} />
+          <Message own={false} />
+          <Message own={false} />
+          <Message own={true} />
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@
       font-family: vazir roboto-reg;
       overflow: hidden;
   }
-  /*slate gray indigo violet*/
+
 
   * ::-webkit-scrollbar{
       scrollbar-color:black;
@@ -44,18 +44,18 @@
   }
 
   *::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+      width: 5px;
+      height: 5px;
   }
 
   *::-webkit-scrollbar-track {
-      /* background: #d4d4d4; */
-      /* background: #e9e8e8; */
+      /* background: #d4d4d4; 
+      background: #e9e8e8; */
       border-radius: 10px;
   }
 
   *::-webkit-scrollbar-thumb {
-      background-color:#bdbcbc;
+      background-color:rgba(189, 188, 188, 0.399);
       border-radius: 20px;
   }
 
