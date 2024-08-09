@@ -31,6 +31,7 @@ export default function page() {
       headers: {
         "content-type": "application/json",
       },
+      credentials:"include",
       body: JSON.stringify({
         username: data.username,
         phone: data.phone,
