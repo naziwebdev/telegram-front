@@ -1,14 +1,33 @@
+"use client";
 import Chat from "@/components/Chat";
 import HomeApp from "@/components/HomeApp";
-import { authUser } from "@/utils/auth";
-import { redirect } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+export default function Home() {
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
-export default async function Home() {
-  const user = await authUser();
 
-  if (!user) {
-    redirect('/login')
-  }
+   const userInfo = async () => {
+    const res = await fetch("http://localhost:4002/auth/me", {
+      credentials: "include",
+    });
+    const data = await res.json();
+  
+    if (res.status === 200) {
+      setUser(data)
+    }else{
+      router.replace('/login')
+    }
+  };
+  
+
+
+
+  useEffect(() => {
+  userInfo()
+    
+  }, []);
 
   return (
     <div className="flex justify-between h-dvh overflow-hidden">
