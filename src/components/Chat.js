@@ -12,9 +12,11 @@ import Image from "next/image";
 export default function Chat({ full }) {
   return (
     <div
-      className={`${
-        full === true ? "w-full" : "hidden md:w-[60%] xmd:w-2/3"
-      } h-full overflow-hidden`}
+      className={`  ${
+        full === false && "w-0 sm:w-[60%] xmd:w-2/3" 
+      } h-full overflow-hidden  ${
+        full === true && "w-full" 
+      }`} 
     >
       <div className="flex justify-between items-center w-full  bg-zinc-900 px-5 py-3">
         <div className="flex justify-between items-center gap-x-4">
