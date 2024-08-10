@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function Chat({ full , roomInfo , sendMessage , user}) {
   const [message , setMessage] = useState('')
-  console.log(message,roomInfo?.title , user._id)
+  console.log(roomInfo)
   
 
   const sendMessageHandler = (e) => {
@@ -93,12 +93,15 @@ export default function Chat({ full , roomInfo , sendMessage , user}) {
           </form>
         </div>
         <div className="w-full message-wrapper overflow-auto h-[90vh] pt-8 pb-32 px-8 ">
-          <Message own={false} />
-          <Message own={true} />
-          <Message own={false} />
-          <Message own={false} />
-          <Message own={false} />
-          <Message own={true} />
+         
+         {roomInfo?.messages?.map (item => (
+          item.sender === user._id ?
+  <Message key={item._id} own={true} content={item}/>
+  :
+  <Message key={item._id} own={false}  content={item}/>
+         ))}
+         
+        
         </div>
       </div>
       </> 
