@@ -9,7 +9,7 @@ import Message from "./Message";
 
 import Image from "next/image";
 
-export default function Chat({ full }) {
+export default function Chat({ full , roomInfo }) {
   return (
     <div
       className={`  ${
@@ -17,7 +17,11 @@ export default function Chat({ full }) {
       } h-full overflow-hidden  ${
         full === true && "w-full" 
       }`} 
-    >
+    >   
+   
+       {roomInfo?.title ?
+       <>
+    
       <div className="flex justify-between items-center w-full  bg-zinc-900 px-5 py-3">
         <div className="flex justify-between items-center gap-x-4">
           <img
@@ -26,7 +30,7 @@ export default function Chat({ full }) {
             className="xs:w-16 xs:h-16 w-12 h-12 rounded-full object-cover"
           />
           <div className="text-white">
-            <p className="xs:text-lg font-roboto-bold">React-js</p>
+            <p className="xs:text-lg font-roboto-bold">{roomInfo?.title}</p>
             <span className="text-zinc-400 font-roboto-reg text-sm xs:text-base">
               last seen recently
             </span>
@@ -79,6 +83,20 @@ export default function Chat({ full }) {
           <Message own={true} />
         </div>
       </div>
+      </> 
+      :
+    
+      <Image
+        src={"/images/bg.png"}
+        alt="bg"
+        width={1000}
+        height={1000}
+        className="absolute -z-20 w-full h-full object-cover"
+      />
+   
+  
+}
+
     </div>
   );
 }
