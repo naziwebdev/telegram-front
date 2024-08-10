@@ -13,6 +13,7 @@ export default function Home() {
   const [namespaceSocket, setNamespaceSocket] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [roomInfo,setRoomInfo] = useState({})
+  const [newMessage,setNewMessage] = useState({})
 
 
 
@@ -27,6 +28,8 @@ export default function Home() {
     });
   }, []);
 
+
+  
 
 
 
@@ -47,6 +50,7 @@ export default function Home() {
   const getRoomInfo = (room) => {
 
     namespaceSocket?.emit('joining' , room.title)
+    getMessage()
 
     namespaceSocket.off('roomInfo')
     namespaceSocket.on('roomInfo' , data => {
@@ -56,7 +60,17 @@ export default function Home() {
 
   }
 
-  console.log(roomInfo)
+
+  const sendMessage = (message,roomName,userID,) => {
+    namespaceSocket.emit('newMsg' , {message, roomName, userID})
+
+  }
+
+  const getMessage = () => {
+    namespaceSocket.on('confirmMsg' , data => {
+      setNewMessage(data)
+    })
+  }
  
 
   const userInfo = async () => {
@@ -80,7 +94,7 @@ export default function Home() {
     <div className="flex justify-between h-dvh overflow-hidden">
       <HomeApp  namespaces={namespaces} rooms={rooms}
       getRoomInfo={getRoomInfo}/>
-      <Chat full={false}  roomInfo={roomInfo}/>
+      <Chat full={false}  roomInfo={roomInfo} sendMessage={sendMessage} user={user}/>
     </div>
   );
 }

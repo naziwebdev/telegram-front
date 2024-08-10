@@ -13,7 +13,6 @@ export default function Home({ namespaces, rooms , getRoomInfo }) {
 
   return (
     <div className="flex-1 bg-zinc-900 h-dvh overflow-y-auto overflow-x-hidden">
-      <Link href={"/chat/8768"}>
         <div className="flex justify-between items-center gap-x-5 xl:gap-x-10 p-5">
           <GiHamburgerMenu className="text-white text-4xl items-center" />
           <div className="flex justify-between items-center gap-x-5 p-2 w-[80%] bg-white rounded-full">
@@ -68,7 +67,6 @@ export default function Home({ namespaces, rooms , getRoomInfo }) {
             </li>
           ))}
         </ul>
-      </Link>
     </div>
   );
 }

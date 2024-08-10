@@ -1,3 +1,4 @@
+"use client"
 import { TbSearch } from "react-icons/tb";
 import { FiPhone } from "react-icons/fi";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -5,11 +6,24 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { MdLocationOn } from "react-icons/md";
 import { GrAttachment } from "react-icons/gr";
 import { BsFillSendFill } from "react-icons/bs";
+import { useState,useEffect } from "react";
 import Message from "./Message";
 
 import Image from "next/image";
 
-export default function Chat({ full , roomInfo }) {
+export default function Chat({ full , roomInfo , sendMessage , user}) {
+  const [message , setMessage] = useState('')
+  console.log(message,roomInfo?.title , user._id)
+  
+
+  const sendMessageHandler = (e) => {
+    e.preventDefault()
+
+    sendMessage(message,roomInfo?.title , user._id)
+    setMessage("")
+  }
+
+
   return (
     <div
       className={`  ${
@@ -52,9 +66,12 @@ export default function Chat({ full , roomInfo }) {
         />
         <div className=" flex justify-between items-center px-3 md:px-6 bg-[#bdbcbc] w-[90%] xmd:w-4/5 rounded-2xl h-14 absolute bottom-16 2xs:bottom-6 left-1/2 -translate-x-1/2 gap-x-4">
           <BsEmojiSmile className="text-3xl cursor-pointer" />
+          <form className="w-full flex h-full ">
           <input
             type="text"
-            className="w-1/2  overflow-auto xs:flex-1 h-full bg-transparent outline-none"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-1/2 overflow-auto xs:flex-1 h-full bg-transparent outline-none"
           />
           <div className="flex items-center gap-x-2 md:gap-x-5 text-xl md:text-2xl">
             <div className="">
@@ -69,10 +86,11 @@ export default function Chat({ full , roomInfo }) {
             </div>
 
             <MdLocationOn className="text-3xl cursor-pointer" />
-            <button className="flex justify-center items-center bg-purple-600 rounded-full p-2">
+            <button type="submit" onClick={sendMessageHandler} className="flex justify-center items-center bg-purple-600 rounded-full p-2">
               <BsFillSendFill className="text-white" />
             </button>
           </div>
+          </form>
         </div>
         <div className="w-full message-wrapper overflow-auto h-[90vh] pt-8 pb-32 px-8 ">
           <Message own={false} />
