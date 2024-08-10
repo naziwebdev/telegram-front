@@ -27,6 +27,7 @@ export default function Home() {
       getNamespacesRoom(namespaces[0].href);
     });
   }, []);
+  
 
 
   
@@ -94,7 +95,8 @@ export default function Home() {
     <div className="flex justify-between h-dvh overflow-hidden">
       <HomeApp  namespaces={namespaces} rooms={rooms}
       getRoomInfo={getRoomInfo}/>
-      <Chat full={false}  roomInfo={roomInfo} sendMessage={sendMessage} user={user}/>
+      <Chat full={false}  roomInfo={roomInfo} sendMessage={sendMessage} user={user}
+      newMessage={newMessage}/>
     </div>
   );
 }
