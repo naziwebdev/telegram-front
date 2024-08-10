@@ -6,7 +6,6 @@ export default function Message({ own, content }) {
   ).getMinutes()}`;
   const now = `${new Date().getHours()}:${new Date().getMinutes()}`;
 
-  console.log(now, sendTime);
   return (
     <div
       className={`w-1/2 xs:w-1/3 h-auto p-2.5 mt-2 rounded-xl break-words  bg-purple-600 text-white font-vazir ${

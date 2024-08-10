@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function Home({ namespaces, rooms , getRoomInfo }) {
   const [mainNamespace, setMainNamespace] = useState(null);
+ console.log(rooms)
 
   useEffect(() => {
     namespaces !== null && setMainNamespace(namespaces[0]?.title);
@@ -42,18 +43,27 @@ export default function Home({ namespaces, rooms , getRoomInfo }) {
             <li key={item._id} className="flex justify-between items-center "
             onClick={() => getRoomInfo(item)}>
               <div className="flex justify-between items-center gap-x-4">
+                {item?.image ?
                 <img
-                  src="/images/bg.png"
+                  src={`http://localhost:4002${item?.image}`}
                   alt="avatar"
                   className="w-16 h-16 rounded-full object-cover"
                 />
+
+                :
+                <div
+                alt="avatar"
+                className="flex justify-center text-xl items-center text-white w-16 h-16 rounded-full bg-purple-400"
+              >{item.title.slice(0,2)}</div>
+
+
+}
                 <div className="text-white">
                   <p className="text-lg font-roboto-bold">{item.title}</p>
                   <p className="font-roboto-reg">
-                    Nazi :{" "}
+                  {item?.messages[item?.messages.length - 1]?.sender?.username} : {' '}
                     <span className="text-zinc-400 font-vazir">
-                      {" "}
-                      ❤️سلام ممنون
+                     {item?.messages[item?.messages.length - 1]?.message}
                     </span>
                   </p>
                 </div>

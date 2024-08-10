@@ -26,10 +26,7 @@ export default function Home() {
       setNamespaces(namespaces);
       getNamespacesRoom(namespaces[0].href);
     });
-  }, []);
-  
-
-
+  }, [])
   
 
 
