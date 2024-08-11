@@ -76,7 +76,7 @@ export default function Home() {
     <div className="flex justify-between h-dvh overflow-hidden">
       <HomeApp
         namespaces={namespaces}
-        
+        getNamespacesRoom = {getNamespacesRoom}
         rooms={rooms}
         getRoomInfo={getRoomInfo}
       />

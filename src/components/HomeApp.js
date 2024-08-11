@@ -4,7 +4,12 @@ import { TbSearch } from "react-icons/tb";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-export default function Home({ namespaces, rooms, getRoomInfo }) {
+export default function Home({
+  namespaces,
+  rooms,
+  getRoomInfo,
+  getNamespacesRoom,
+}) {
   const [mainNamespace, setMainNamespace] = useState(null);
   console.log(rooms);
 
@@ -32,7 +37,10 @@ export default function Home({ namespaces, rooms, getRoomInfo }) {
             className={`ps-5 ${
               item.title === mainNamespace ? "marker text-purple-600" : ""
             } cursor-pointer`}
-            onClick={() => setMainNamespace(item.title)}
+            onClick={() => {
+              setMainNamespace(item.title);
+              getNamespacesRoom(item.href);
+            }}
           >
             {item.title}
           </li>
@@ -62,13 +70,20 @@ export default function Home({ namespaces, rooms, getRoomInfo }) {
               )}
               <div className="text-white">
                 <p className="text-lg font-roboto-bold">{item.title}</p>
-                <p className="font-roboto-reg">
-                  {item?.messages[item?.messages.length - 1]?.sender?.username}{" "}
-                  :{" "}
-                  <span className="text-zinc-400 font-vazir">
-                    {item?.messages[item?.messages.length - 1]?.message}
-                  </span>
-                </p>
+                {item?.messages.length ? 
+                  <p className="font-roboto-reg">
+                    {
+                      item?.messages[item?.messages.length - 1]?.sender
+                        ?.username
+                    }{" "}
+                    :{" "}
+                    <span className="text-zinc-400 font-vazir">
+                      {item?.messages[item?.messages.length - 1]?.message}
+                    </span>
+                  </p>
+                  :
+                  <p className="text-zinc-400 ">empety room</p>
+                }
               </div>
             </div>
             <div className="">
