@@ -17,16 +17,26 @@ export default function Home() {
   const [userOnlineCount, setUserOnlineCount] = useState(null);
   const [isTypingInfo, setIsTypingInfo] = useState({});
   const [mediaInfo, setMediaInfo] = useState({});
+  const [fullScreenChat,setFullScreenChat] = useState(false)
 
   const router = useRouter();
-
 
   useEffect(() => {
     socket.on("namespaces", (namespaces) => {
       setNamespaces(namespaces);
       getNamespacesRoom(namespaces[0].href);
-    })
-  }, [])
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to Socket.IO server!");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from Socket.IO server!");
+    });
+  }, []);
 
   const getNamespacesRoom = (namespaceHref) => {
     if (namespaceSocket) namespaceSocket.close();
@@ -44,7 +54,7 @@ export default function Home() {
     getMessage();
     getOnlineUserCount();
     confirmIsTyping();
-    confirmFile()
+    confirmFile();
 
     namespaceSocket.off("roomInfo");
     namespaceSocket.on("roomInfo", (data) => {
@@ -90,6 +100,7 @@ export default function Home() {
     });
   };
 
+  
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
       credentials: "include",
@@ -114,9 +125,9 @@ export default function Home() {
         getNamespacesRoom={getNamespacesRoom}
         rooms={rooms}
         getRoomInfo={getRoomInfo}
+        setFullScreenChat={setFullScreenChat}
       />
       <Chat
-        full={false}
         roomInfo={roomInfo}
         sendMessage={sendMessage}
         user={user}
@@ -126,6 +137,8 @@ export default function Home() {
         isTypingInfo={isTypingInfo}
         sendFile={sendFile}
         mediaInfo={mediaInfo}
+        fullScreenChat={fullScreenChat}
+        setFullScreenChat={setFullScreenChat}
       />
     </div>
   );

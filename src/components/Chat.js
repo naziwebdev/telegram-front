@@ -1,11 +1,13 @@
 "use client";
 import { TbSearch } from "react-icons/tb";
-import { FiPhone } from "react-icons/fi";
+// import { FiPhone } from "react-icons/fi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BsEmojiSmile } from "react-icons/bs";
 import { MdLocationOn } from "react-icons/md";
 import { GrAttachment } from "react-icons/gr";
 import { BsFillSendFill } from "react-icons/bs";
+import { FaArrowRight } from "react-icons/fa";
+
 import { useState, useEffect, useRef } from "react";
 import Message from "./Message";
 import MediaMessage from "./MediaMessage";
@@ -13,7 +15,6 @@ import MediaMessage from "./MediaMessage";
 import Image from "next/image";
 
 export default function Chat({
-  full,
   roomInfo,
   sendMessage,
   user,
@@ -23,6 +24,8 @@ export default function Chat({
   isTypingInfo,
   sendFile,
   mediaInfo,
+  fullScreenChat,
+  setFullScreenChat,
 }) {
   const [message, setMessage] = useState("");
   const [newMessages, setNewMessages] = useState([]);
@@ -30,7 +33,6 @@ export default function Chat({
   const [mediaInfos, setMediaInfoes] = useState([]);
 
   const isTypingTimeout = useRef();
-  console.log(newMessages, mediaInfos);
 
   useEffect(() => {
     if (newMessage.message) {
@@ -60,8 +62,10 @@ export default function Chat({
   return (
     <div
       className={`  ${
-        full === false && "w-0 sm:w-[60%] xmd:w-2/3"
-      } h-full overflow-hidden ${full === true && "w-full"}`}
+        fullScreenChat === false
+          ? "w-0 sm:w-[60%] xmd:w-2/3"
+          : "w-full sm:w-[60%] xmd:w-2/3"
+      } h-full overflow-hidden ${fullScreenChat === true && "w-full"}`}
     >
       {roomInfo?.title ? (
         <>
@@ -82,9 +86,10 @@ export default function Chat({
               </div>
             </div>
             <div className="flex items-center gap-x-4 xs:gap-x-8 cursor-pointer text-xl xs:text-2xl text-zinc-400">
-              <FiPhone />
-              <TbSearch />
               <BsThreeDotsVertical />
+              <TbSearch />
+
+              <FaArrowRight onClick={() => setFullScreenChat(false)} />
             </div>
           </div>
           <div className="relative h-[90vh]">
@@ -168,33 +173,37 @@ export default function Chat({
               {/* realtime messages */}
               {newMessages.length &&
                 newMessages?.map((item) =>
-                  item.roomName === roomInfo.title ?
-                  item.sender._id === user._id ? (
-                    <Message
-                      key={crypto.randomUUID()}
-                      own={true}
-                      content={item}
-                    />
+                  item.roomName === roomInfo.title ? (
+                    item.sender._id === user._id ? (
+                      <Message
+                        key={crypto.randomUUID()}
+                        own={true}
+                        content={item}
+                      />
+                    ) : (
+                      <Message
+                        key={crypto.randomUUID()}
+                        own={false}
+                        content={item}
+                      />
+                    )
                   ) : (
-                    <Message
-                      key={crypto.randomUUID()}
-                      own={false}
-                      content={item}
-                    />
-                  ):''
+                    ""
+                  )
                 )}
 
               {/* realtime medias */}
               {mediaInfos.length &&
                 mediaInfos?.map((item) =>
-                  item.roomName == roomInfo.title ?
-                  item?.sender?._id === user._id ? (
-                    <MediaMessage key={item._id} own={true} content={item} />
+                  item.roomName == roomInfo.title ? (
+                    item?.sender?._id === user._id ? (
+                      <MediaMessage key={item._id} own={true} content={item} />
+                    ) : (
+                      <MediaMessage key={item._id} own={false} content={item} />
+                    )
                   ) : (
-                    <MediaMessage key={item._id} own={false} content={item} />
+                    ""
                   )
-                  :
-                  ''
                 )}
             </div>
           </div>

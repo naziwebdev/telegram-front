@@ -9,9 +9,10 @@ export default function Home({
   rooms,
   getRoomInfo,
   getNamespacesRoom,
+  setFullScreenChat,
 }) {
   const [mainNamespace, setMainNamespace] = useState(null);
- 
+
   useEffect(() => {
     namespaces !== null && setMainNamespace(namespaces[0]?.title);
   }, [namespaces]);
@@ -50,7 +51,10 @@ export default function Home({
           <li
             key={item._id}
             className="flex justify-between items-center "
-            onClick={() => getRoomInfo(item)}
+            onClick={() => {
+              getRoomInfo(item);
+              setFullScreenChat(true);
+            }}
           >
             <div className="flex justify-between items-center gap-x-4">
               {item?.image ? (
