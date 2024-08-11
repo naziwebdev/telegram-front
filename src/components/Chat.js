@@ -6,7 +6,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { MdLocationOn } from "react-icons/md";
 import { GrAttachment } from "react-icons/gr";
 import { BsFillSendFill } from "react-icons/bs";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Message from "./Message";
 
 import Image from "next/image";
@@ -17,11 +17,15 @@ export default function Chat({
   sendMessage,
   user,
   newMessage,
-  userOnlineCount
+  userOnlineCount,
+  detectIsTyping,
+  isTypingInfo,
 }) {
   const [message, setMessage] = useState("");
   const [newMessages, setNewMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
 
+  const isTypingTimeout = useRef();
 
   useEffect(() => {
     if (newMessage.message) {
@@ -32,15 +36,21 @@ export default function Chat({
   const sendMessageHandler = (e) => {
     e.preventDefault();
 
-    sendMessage(message, roomInfo?.title, user._id);
-    setMessage("");
+    if (message.trim() !== "") {
+      sendMessage(message, roomInfo?.title, user._id);
+      setMessage("");
+    }
   };
+
+  useEffect(() => {
+    detectIsTyping(user._id, roomInfo.title, isTyping);
+  }, [isTyping]);
 
   return (
     <div
       className={`  ${
         full === false && "w-0 sm:w-[60%] xmd:w-2/3"
-      } h-full overflow-hidden  ${full === true && "w-full"}`}
+      } h-full overflow-hidden ${full === true && "w-full"}`}
     >
       {roomInfo?.title ? (
         <>
@@ -54,7 +64,9 @@ export default function Chat({
               <div className="text-white">
                 <p className="xs:text-lg font-roboto-bold">{roomInfo?.title}</p>
                 <span className="text-zinc-400 font-roboto-reg text-sm xs:text-base">
-                 {userOnlineCount} users online
+                  {isTypingInfo?.isTyping
+                    ? `${isTypingInfo?.user} is Typing ...`
+                    : `${userOnlineCount} users online`}
                 </span>
               </div>
             </div>
@@ -78,7 +90,20 @@ export default function Chat({
                 <input
                   type="text"
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                    if (!isTyping) {
+                      setIsTyping(true);
+                    }
+
+                    if (isTypingTimeout) {
+                      clearTimeout(isTypingTimeout.current);
+                    }
+
+                    isTypingTimeout.current = setTimeout(() => {
+                      setIsTyping(false);
+                    }, 2000);
+                  }}
                   className="w-1/2 overflow-auto xs:flex-1 h-full bg-transparent outline-none"
                 />
                 <div className="flex items-center gap-x-2 md:gap-x-5 text-xl md:text-2xl">

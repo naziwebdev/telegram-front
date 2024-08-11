@@ -14,7 +14,8 @@ export default function Home() {
   const [rooms, setRooms] = useState([]);
   const [roomInfo, setRoomInfo] = useState({});
   const [newMessage, setNewMessage] = useState({});
-  const [userOnlineCount,setUserOnlineCount] = useState(null)
+  const [userOnlineCount, setUserOnlineCount] = useState(null);
+  const [isTypingInfo, setIsTypingInfo] = useState({});
 
   const router = useRouter();
 
@@ -39,7 +40,8 @@ export default function Home() {
   const getRoomInfo = (room) => {
     namespaceSocket?.emit("joining", room.title);
     getMessage();
-    getOnlineUserCount()
+    getOnlineUserCount();
+    confirmIsTyping()
 
     namespaceSocket.off("roomInfo");
     namespaceSocket.on("roomInfo", (data) => {
@@ -57,16 +59,22 @@ export default function Home() {
     });
   };
 
-
   const getOnlineUserCount = () => {
-    namespaceSocket.on("onlineUsers" , data => {
+    namespaceSocket.on("onlineUsers", (data) => {
+      setUserOnlineCount(data);
+    });
+  };
 
-      setUserOnlineCount(data)
+  const detectIsTyping = (userID, roomName, isTyping) => {
+    namespaceSocket?.emit("isTyping", { userID, roomName, isTyping });
+  };
 
-    })
-  }
+  const confirmIsTyping = () => {
+    namespaceSocket?.on("isTyping", (data) => {
+      setIsTypingInfo(data);
+    });
+  };
 
-  console.log(userOnlineCount)
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
       credentials: "include",
@@ -88,7 +96,7 @@ export default function Home() {
     <div className="flex justify-between h-dvh overflow-hidden">
       <HomeApp
         namespaces={namespaces}
-        getNamespacesRoom = {getNamespacesRoom}
+        getNamespacesRoom={getNamespacesRoom}
         rooms={rooms}
         getRoomInfo={getRoomInfo}
       />
@@ -99,6 +107,8 @@ export default function Home() {
         user={user}
         newMessage={newMessage}
         userOnlineCount={userOnlineCount}
+        detectIsTyping={detectIsTyping}
+        isTypingInfo={isTypingInfo}
       />
     </div>
   );
