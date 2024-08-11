@@ -106,14 +106,14 @@ export default function Chat({
             </div>
             <div className="w-full message-wrapper overflow-auto h-[90vh] pt-8 pb-32 px-8 ">
               {roomInfo?.messages?.map((item) =>
-                item.sender === user._id ? (
+                item.sender._id === user._id ? (
                   <Message key={item._id} own={true} content={item} />
                 ) : (
                   <Message key={item._id} own={false} content={item} />
                 )
               )}
               {newMessages?.map((item) =>
-                item.userID === user._id ? (
+                item.sender._id === user._id ? (
                   <Message
                     key={crypto.randomUUID()}
                     own={true}

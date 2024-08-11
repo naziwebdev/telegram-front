@@ -12,31 +12,22 @@ export default function Home() {
   const [namespaces, setNamespaces] = useState(null);
   const [namespaceSocket, setNamespaceSocket] = useState(null);
   const [rooms, setRooms] = useState([]);
-  const [roomInfo,setRoomInfo] = useState({})
-  const [newMessage,setNewMessage] = useState({})
-
-
-
+  const [roomInfo, setRoomInfo] = useState({});
+  const [newMessage, setNewMessage] = useState({});
 
   const router = useRouter();
-
 
   useEffect(() => {
     socket.on("namespaces", (namespaces) => {
       setNamespaces(namespaces);
       getNamespacesRoom(namespaces[0].href);
     });
-  }, [])
-  
-
-
+  }, []);
 
   const getNamespacesRoom = (namespaceHref) => {
     if (namespaceSocket) namespaceSocket.close();
     setNamespaceSocket(IO.connect(`http://localhost:4002${namespaceHref}`));
   };
-  
-
 
   useEffect(() => {
     namespaceSocket?.on("rooms", (rooms) => {
@@ -44,32 +35,25 @@ export default function Home() {
     });
   }, [namespaceSocket]);
 
-
   const getRoomInfo = (room) => {
+    namespaceSocket?.emit("joining", room.title);
+    getMessage();
 
-    namespaceSocket?.emit('joining' , room.title)
-    getMessage()
+    namespaceSocket.off("roomInfo");
+    namespaceSocket.on("roomInfo", (data) => {
+      setRoomInfo(data);
+    });
+  };
 
-    namespaceSocket.off('roomInfo')
-    namespaceSocket.on('roomInfo' , data => {
-
-      setRoomInfo(data)
-    })
-
-  }
-
-
-  const sendMessage = (message,roomName,userID,) => {
-    namespaceSocket.emit('newMsg' , {message, roomName, userID})
-
-  }
+  const sendMessage = (message, roomName, userID) => {
+    namespaceSocket.emit("newMsg", { message, roomName, userID });
+  };
 
   const getMessage = () => {
-    namespaceSocket.on('confirmMsg' , data => {
-      setNewMessage(data)
-    })
-  }
- 
+    namespaceSocket.on("confirmMsg", (data) => {
+      setNewMessage(data);
+    });
+  };
 
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
@@ -90,10 +74,19 @@ export default function Home() {
 
   return (
     <div className="flex justify-between h-dvh overflow-hidden">
-      <HomeApp  namespaces={namespaces} rooms={rooms}
-      getRoomInfo={getRoomInfo}/>
-      <Chat full={false}  roomInfo={roomInfo} sendMessage={sendMessage} user={user}
-      newMessage={newMessage}/>
+      <HomeApp
+        namespaces={namespaces}
+        
+        rooms={rooms}
+        getRoomInfo={getRoomInfo}
+      />
+      <Chat
+        full={false}
+        roomInfo={roomInfo}
+        sendMessage={sendMessage}
+        user={user}
+        newMessage={newMessage}
+      />
     </div>
   );
 }
