@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function MediaMessage({ own, content }) {
-    console.log(content , 'content')
+    
   const sendTime = `${new Date(content?.createdAt).getHours()}:${new Date(
     content?.createdAt
   ).getMinutes()}`;

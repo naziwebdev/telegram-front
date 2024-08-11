@@ -30,7 +30,7 @@ export default function Chat({
   const [mediaInfos, setMediaInfoes] = useState([]);
 
   const isTypingTimeout = useRef();
-  console.log(roomInfo, "roomInfo");
+  console.log(newMessages, mediaInfos);
 
   useEffect(() => {
     if (newMessage.message) {
@@ -128,7 +128,7 @@ export default function Chat({
                       className="invisible w-0 h-0 opacity-0 "
                       onChange={(e) =>
                         sendFile(
-                          e.target.files[0].name,
+                          e.target.files[0]?.name,
                           user._id,
                           e.target.files[0],
                           roomInfo.title
@@ -168,6 +168,7 @@ export default function Chat({
               {/* realtime messages */}
               {newMessages.length &&
                 newMessages?.map((item) =>
+                  item.roomName === roomInfo.title ?
                   item.sender._id === user._id ? (
                     <Message
                       key={crypto.randomUUID()}
@@ -180,17 +181,20 @@ export default function Chat({
                       own={false}
                       content={item}
                     />
-                  )
+                  ):''
                 )}
 
               {/* realtime medias */}
               {mediaInfos.length &&
                 mediaInfos?.map((item) =>
+                  item.roomName == roomInfo.title ?
                   item?.sender?._id === user._id ? (
                     <MediaMessage key={item._id} own={true} content={item} />
                   ) : (
                     <MediaMessage key={item._id} own={false} content={item} />
                   )
+                  :
+                  ''
                 )}
             </div>
           </div>

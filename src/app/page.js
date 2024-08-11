@@ -57,6 +57,7 @@ export default function Home() {
   };
 
   const getMessage = () => {
+    namespaceSocket.off("confirmMsg");
     namespaceSocket.on("confirmMsg", (data) => {
       setNewMessage(data);
     });
@@ -83,12 +84,11 @@ export default function Home() {
   };
 
   const confirmFile = () => {
+    namespaceSocket.off("confirmMedia");
     namespaceSocket?.on("confirmMedia", (data) => {
       setMediaInfo(data);
     });
   };
-
-  console.log(mediaInfo)
 
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
@@ -102,8 +102,6 @@ export default function Home() {
       router.replace("/login");
     }
   };
-
-  console.log(mediaInfo)
 
   useEffect(() => {
     userInfo();
