@@ -14,6 +14,7 @@ export default function Home() {
   const [rooms, setRooms] = useState([]);
   const [roomInfo, setRoomInfo] = useState({});
   const [newMessage, setNewMessage] = useState({});
+  const [userOnlineCount,setUserOnlineCount] = useState(null)
 
   const router = useRouter();
 
@@ -38,6 +39,7 @@ export default function Home() {
   const getRoomInfo = (room) => {
     namespaceSocket?.emit("joining", room.title);
     getMessage();
+    getOnlineUserCount()
 
     namespaceSocket.off("roomInfo");
     namespaceSocket.on("roomInfo", (data) => {
@@ -55,6 +57,16 @@ export default function Home() {
     });
   };
 
+
+  const getOnlineUserCount = () => {
+    namespaceSocket.on("onlineUsers" , data => {
+
+      setUserOnlineCount(data)
+
+    })
+  }
+
+  console.log(userOnlineCount)
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
       credentials: "include",
@@ -86,6 +98,7 @@ export default function Home() {
         sendMessage={sendMessage}
         user={user}
         newMessage={newMessage}
+        userOnlineCount={userOnlineCount}
       />
     </div>
   );

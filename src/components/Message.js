@@ -2,7 +2,6 @@ import React from "react";
 
 export default function Message({ own, content }) {
   
-  console.log(content);
   const sendTime = `${new Date(content?.createdAt).getHours()}:${new Date(
     content?.createdAt
   ).getMinutes()}`;

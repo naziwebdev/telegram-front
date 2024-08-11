@@ -11,8 +11,7 @@ export default function Home({
   getNamespacesRoom,
 }) {
   const [mainNamespace, setMainNamespace] = useState(null);
-  console.log(rooms);
-
+ 
   useEffect(() => {
     namespaces !== null && setMainNamespace(namespaces[0]?.title);
   }, [namespaces]);
@@ -70,7 +69,7 @@ export default function Home({
               )}
               <div className="text-white">
                 <p className="text-lg font-roboto-bold">{item.title}</p>
-                {item?.messages.length ? 
+                {item?.messages.length ? (
                   <p className="font-roboto-reg">
                     {
                       item?.messages[item?.messages.length - 1]?.sender
@@ -81,9 +80,9 @@ export default function Home({
                       {item?.messages[item?.messages.length - 1]?.message}
                     </span>
                   </p>
-                  :
+                ) : (
                   <p className="text-zinc-400 ">empety room</p>
-                }
+                )}
               </div>
             </div>
             <div className="">

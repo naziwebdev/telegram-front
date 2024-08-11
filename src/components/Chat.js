@@ -17,11 +17,11 @@ export default function Chat({
   sendMessage,
   user,
   newMessage,
+  userOnlineCount
 }) {
   const [message, setMessage] = useState("");
   const [newMessages, setNewMessages] = useState([]);
 
-  console.log(newMessages);
 
   useEffect(() => {
     if (newMessage.message) {
@@ -54,7 +54,7 @@ export default function Chat({
               <div className="text-white">
                 <p className="xs:text-lg font-roboto-bold">{roomInfo?.title}</p>
                 <span className="text-zinc-400 font-roboto-reg text-sm xs:text-base">
-                  last seen recently
+                 {userOnlineCount} users online
                 </span>
               </div>
             </div>
