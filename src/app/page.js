@@ -16,15 +16,17 @@ export default function Home() {
   const [newMessage, setNewMessage] = useState({});
   const [userOnlineCount, setUserOnlineCount] = useState(null);
   const [isTypingInfo, setIsTypingInfo] = useState({});
+  const [mediaInfo, setMediaInfo] = useState({});
 
   const router = useRouter();
+
 
   useEffect(() => {
     socket.on("namespaces", (namespaces) => {
       setNamespaces(namespaces);
       getNamespacesRoom(namespaces[0].href);
-    });
-  }, []);
+    })
+  }, [])
 
   const getNamespacesRoom = (namespaceHref) => {
     if (namespaceSocket) namespaceSocket.close();
@@ -41,7 +43,8 @@ export default function Home() {
     namespaceSocket?.emit("joining", room.title);
     getMessage();
     getOnlineUserCount();
-    confirmIsTyping()
+    confirmIsTyping();
+    confirmFile()
 
     namespaceSocket.off("roomInfo");
     namespaceSocket.on("roomInfo", (data) => {
@@ -75,6 +78,18 @@ export default function Home() {
     });
   };
 
+  const sendFile = (filename, sender, file, roomName) => {
+    namespaceSocket?.emit("newMedia", { filename, sender, file, roomName });
+  };
+
+  const confirmFile = () => {
+    namespaceSocket?.on("confirmMedia", (data) => {
+      setMediaInfo(data);
+    });
+  };
+
+  console.log(mediaInfo)
+
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
       credentials: "include",
@@ -87,6 +102,8 @@ export default function Home() {
       router.replace("/login");
     }
   };
+
+  console.log(mediaInfo)
 
   useEffect(() => {
     userInfo();
@@ -109,6 +126,8 @@ export default function Home() {
         userOnlineCount={userOnlineCount}
         detectIsTyping={detectIsTyping}
         isTypingInfo={isTypingInfo}
+        sendFile={sendFile}
+        mediaInfo={mediaInfo}
       />
     </div>
   );

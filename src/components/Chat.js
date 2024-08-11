@@ -8,6 +8,7 @@ import { GrAttachment } from "react-icons/gr";
 import { BsFillSendFill } from "react-icons/bs";
 import { useState, useEffect, useRef } from "react";
 import Message from "./Message";
+import MediaMessage from "./MediaMessage";
 
 import Image from "next/image";
 
@@ -20,18 +21,28 @@ export default function Chat({
   userOnlineCount,
   detectIsTyping,
   isTypingInfo,
+  sendFile,
+  mediaInfo,
 }) {
   const [message, setMessage] = useState("");
   const [newMessages, setNewMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [mediaInfos, setMediaInfoes] = useState([]);
 
   const isTypingTimeout = useRef();
+  console.log(roomInfo, "roomInfo");
 
   useEffect(() => {
     if (newMessage.message) {
       setNewMessages((prev) => [...prev, newMessage]);
     }
   }, [newMessage]);
+
+  useEffect(() => {
+    if (mediaInfo.path) {
+      setMediaInfoes((prev) => [...prev, mediaInfo]);
+    }
+  }, [mediaInfo]);
 
   const sendMessageHandler = (e) => {
     e.preventDefault();
@@ -115,6 +126,14 @@ export default function Chat({
                       id="location"
                       type="file"
                       className="invisible w-0 h-0 opacity-0 "
+                      onChange={(e) =>
+                        sendFile(
+                          e.target.files[0].name,
+                          user._id,
+                          e.target.files[0],
+                          roomInfo.title
+                        )
+                      }
                     />
                   </div>
 
@@ -130,6 +149,7 @@ export default function Chat({
               </form>
             </div>
             <div className="w-full message-wrapper overflow-auto h-[90vh] pt-8 pb-32 px-8 ">
+              {/* messages room */}
               {roomInfo?.messages?.map((item) =>
                 item.sender._id === user._id ? (
                   <Message key={item._id} own={true} content={item} />
@@ -137,21 +157,41 @@ export default function Chat({
                   <Message key={item._id} own={false} content={item} />
                 )
               )}
-              {newMessages?.map((item) =>
+              {/* medias room */}
+              {roomInfo?.medias?.map((item) =>
                 item.sender._id === user._id ? (
-                  <Message
-                    key={crypto.randomUUID()}
-                    own={true}
-                    content={item}
-                  />
+                  <MediaMessage key={item._id} own={true} content={item} />
                 ) : (
-                  <Message
-                    key={crypto.randomUUID()}
-                    own={false}
-                    content={item}
-                  />
+                  <MediaMessage key={item._id} own={false} content={item} />
                 )
               )}
+              {/* realtime messages */}
+              {newMessages.length &&
+                newMessages?.map((item) =>
+                  item.sender._id === user._id ? (
+                    <Message
+                      key={crypto.randomUUID()}
+                      own={true}
+                      content={item}
+                    />
+                  ) : (
+                    <Message
+                      key={crypto.randomUUID()}
+                      own={false}
+                      content={item}
+                    />
+                  )
+                )}
+
+              {/* realtime medias */}
+              {mediaInfos.length &&
+                mediaInfos?.map((item) =>
+                  item?.sender?._id === user._id ? (
+                    <MediaMessage key={item._id} own={true} content={item} />
+                  ) : (
+                    <MediaMessage key={item._id} own={false} content={item} />
+                  )
+                )}
             </div>
           </div>
         </>
