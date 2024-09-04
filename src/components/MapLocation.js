@@ -12,6 +12,7 @@ export default function MapLocation({
   const sendTime = `${new Date(createdAt).getHours()}:${new Date(
     createdAt
   ).getMinutes()}`;
+  
   const now = `${new Date().getHours()}:${new Date().getMinutes()}`;
   return (
     <>

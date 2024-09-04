@@ -32,7 +32,7 @@ export default function MediaMessage({ own, content }) {
             alt="avatar"
             className="flex justify-center text-xl items-center text-white w-12 h-12 rounded-full bg-orange-400"
           >
-            {content?.sender?.username.slice(0, 2)}
+            {content?.sender?.username?.slice(0, 2)}
           </div>
         )}
       </div>

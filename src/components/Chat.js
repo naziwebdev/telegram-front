@@ -34,8 +34,11 @@ export default function Chat({
   const [newMessages, setNewMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [mediaInfos, setMediaInfoes] = useState([]);
+  const [newLocations, setNewLocations] = useState([]);
 
   const isTypingTimeout = useRef();
+
+  
 
   useEffect(() => {
     if (newMessage.message) {
@@ -49,6 +52,12 @@ export default function Chat({
     }
   }, [mediaInfo]);
 
+  useEffect(() => {
+    if (locationInfo.location) {
+      setNewLocations((prev) => [...prev, locationInfo]);
+    }
+  }, [locationInfo]);
+
   const sendMessageHandler = (e) => {
     e.preventDefault();
 
@@ -58,6 +67,7 @@ export default function Chat({
     }
   };
 
+  
   useEffect(() => {
     detectIsTyping(user._id, roomInfo.title, isTyping);
   }, [isTyping]);
@@ -228,6 +238,31 @@ export default function Chat({
                       <MediaMessage key={item._id} own={true} content={item} />
                     ) : (
                       <MediaMessage key={item._id} own={false} content={item} />
+                    )
+                  ) : (
+                    ""
+                  )
+                )}
+              {/* realtime locations */}
+              {newLocations.length &&
+                newLocations?.map((item) =>
+                  item.roomName === roomInfo.title ? (
+                    item.sender._id === user._id ? (
+                      <MapLocation
+                        key={crypto.randomUUID()}
+                        own={true}
+                        position={[item.location.x, item.location.y]}
+                        center={[item.location.x, item.location.y]}
+                        sender={item.sender}
+                      />
+                    ) : (
+                      <MapLocation
+                        key={crypto.randomUUID()}
+                        own={false}
+                        position={[item.location.x, item.location.y]}
+                        center={[item.location.x, item.location.y]}
+                        sender={item.sender}
+                      />
                     )
                   ) : (
                     ""
