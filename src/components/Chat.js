@@ -11,6 +11,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import Message from "./Message";
 import MediaMessage from "./MediaMessage";
+import MapLocation from "./MapLocation";
 
 import Image from "next/image";
 
@@ -25,6 +26,7 @@ export default function Chat({
   sendFile,
   sendLocation,
   mediaInfo,
+  locationInfo,
   fullScreenChat,
   setFullScreenChat,
 }) {
@@ -172,6 +174,28 @@ export default function Chat({
                   <MediaMessage key={item._id} own={true} content={item} />
                 ) : (
                   <MediaMessage key={item._id} own={false} content={item} />
+                )
+              )}
+              {/* locations room */}
+              {roomInfo?.locations?.map((item) =>
+                item.sender._id === user?._id ? (
+                  <MapLocation
+                    key={item._id}
+                    own={true}
+                    position={[item.x, item.y]}
+                    center={[item.x, item.y]}
+                    sender={item.sender}
+                    createdAt={item.createdAt}
+                  />
+                ) : (
+                  <MapLocation
+                    key={item._id}
+                    own={false}
+                    position={[item.x, item.y]}
+                    center={[item.x, item.y]}
+                    sender={item.sender}
+                    createdAt={item.createdAt}
+                  />
                 )
               )}
               {/* realtime messages */}
