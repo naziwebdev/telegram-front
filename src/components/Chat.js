@@ -23,6 +23,7 @@ export default function Chat({
   detectIsTyping,
   isTypingInfo,
   sendFile,
+  sendLocation,
   mediaInfo,
   fullScreenChat,
   setFullScreenChat,
@@ -142,7 +143,10 @@ export default function Chat({
                     />
                   </div>
 
-                  <MdLocationOn className="text-3xl cursor-pointer" />
+                  <MdLocationOn
+                    className="text-3xl cursor-pointer"
+                    onClick={() => sendLocation(user._id, roomInfo.title)}
+                  />
                   <button
                     type="submit"
                     onClick={sendMessageHandler}

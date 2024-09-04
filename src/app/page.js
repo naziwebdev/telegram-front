@@ -17,9 +17,20 @@ export default function Home() {
   const [userOnlineCount, setUserOnlineCount] = useState(null);
   const [isTypingInfo, setIsTypingInfo] = useState({});
   const [mediaInfo, setMediaInfo] = useState({});
-  const [fullScreenChat,setFullScreenChat] = useState(false)
-
+  const [fullScreenChat, setFullScreenChat] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
+  const [locationInfo,setLocationInfo] = useState({})
   const router = useRouter();
+
+  useEffect(() => {
+    fetch(
+      "https://api.ipgeolocation.io/ipgeo?apiKey=bb4beb4184bd466faa56de72a9144ac0"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setUserLocation(data);
+      });
+  }, []);
 
   useEffect(() => {
     socket.on("namespaces", (namespaces) => {
@@ -55,6 +66,7 @@ export default function Home() {
     getOnlineUserCount();
     confirmIsTyping();
     confirmFile();
+    confirmLocation()
 
     namespaceSocket.off("roomInfo");
     namespaceSocket.on("roomInfo", (data) => {
@@ -100,7 +112,22 @@ export default function Home() {
     });
   };
 
-  
+  const sendLocation = (sender, roomName) => {
+    if (userLocation !== null) {
+      const location = {
+        x: userLocation?.longitude,
+        y: userLocation?.latitude,
+      };
+      namespaceSocket?.emit("newLocation", { location, sender, roomName });
+    }
+  };
+
+  const confirmLocation = () => {
+    namespaceSocket?.on("confirmLocation" , data => {
+      console.log(data)
+    })
+  }
+
   const userInfo = async () => {
     const res = await fetch("http://localhost:4002/auth/me", {
       credentials: "include",
@@ -136,6 +163,7 @@ export default function Home() {
         detectIsTyping={detectIsTyping}
         isTypingInfo={isTypingInfo}
         sendFile={sendFile}
+        sendLocation={sendLocation}
         mediaInfo={mediaInfo}
         fullScreenChat={fullScreenChat}
         setFullScreenChat={setFullScreenChat}
